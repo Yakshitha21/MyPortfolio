@@ -6,6 +6,7 @@
     <title>Yakshitha Kakarla | AI/ML Engineer & Web Developer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         :root {
             --primary-bg: #0a192f;
@@ -13,7 +14,7 @@
             --text-primary: #e6f1ff;
             --text-secondary: #8892b0;
             --accent: #64ffda;
-            --accent-pink: #ff6584;
+            --accent-pink: #52d6b3;
             --nav-height: 70px;
             --max-width: 1200px;
         }
@@ -31,6 +32,7 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.5s ease;
         }
 
         /* Particles Background */
@@ -44,7 +46,6 @@
             pointer-events: none;
         }
 
-        /* Gradient Mesh Overlay */
         .gradient-mesh {
             position: fixed;
             width: 100%;
@@ -71,6 +72,12 @@
             justify-content: center;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            height: 60px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
 
         .nav-container {
@@ -87,6 +94,11 @@
             font-weight: 700;
             color: var(--accent);
             text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .nav-links {
@@ -99,7 +111,7 @@
             text-decoration: none;
             font-size: 1rem;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             position: relative;
         }
 
@@ -133,6 +145,18 @@
             border: none;
             color: var(--accent);
             font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: rotate(90deg);
+        }
+
+        .btn {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .resume-btn {
@@ -140,18 +164,43 @@
             color: var(--accent);
             border: 1px solid var(--accent);
             border-radius: 4px;
-            padding: 0.75rem 1rem;
+            padding: 0.75rem 1.5rem;
             font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resume-btn::before, .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: rgba(100, 255, 218, 0.1);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .resume-btn:hover::before, .contact-btn:hover::before {
+            width: 100%;
         }
 
         .resume-btn:hover {
-            background-color: rgba(100, 255, 218, 0.1);
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.1);
+            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.2);
+        }
+
+        .btn-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .resume-btn:hover .btn-arrow {
+            transform: translateX(3px);
         }
 
         /* Main Content */
@@ -169,9 +218,20 @@
             display: flex;
             align-items: center;
             margin-bottom: 40px;
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
             color: var(--text-primary);
             font-weight: 600;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 300px;
+            height: 1px;
+            margin-left: 20px;
+            background-color: var(--text-secondary);
+            opacity: 0.3;
         }
 
         /* Hero Section */
@@ -180,6 +240,8 @@
             display: flex;
             align-items: center;
             position: relative;
+            background-position: center;
+            background-size: cover;
         }
 
         .hero-content {
@@ -197,22 +259,28 @@
         .hero-greeting {
             color: var(--accent);
             font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .hero-name {
-            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 700;
             margin-bottom: 15px;
             color: var(--text-primary);
             line-height: 1.1;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .hero-title {
             font-size: clamp(1.8rem, 5vw, 3rem);
             color: var(--text-secondary);
             margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .hero-description {
@@ -220,6 +288,15 @@
             margin-bottom: 35px;
             color: var(--text-secondary);
             font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .hero-image {
@@ -233,18 +310,29 @@
             width: 350px;
             height: 350px;
             border-radius: 50%;
-            background-color: var(--accent);
+            /* background-color: var(--accent); */
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
             animation: floatImage 6s ease-in-out infinite;
+            overflow: hidden;
+            /* box-shadow: 0 20px 30px rgba(100, 255, 218, 0.2); */
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
         @keyframes floatImage {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
+            0% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(2deg); }
+            50% { transform: translateY(-20px) rotate(0deg); }
+            75% { transform: translateY(-15px) rotate(-2deg); }
+            100% { transform: translateY(0) rotate(0deg); }
         }
 
         .image-wrapper::before {
@@ -264,11 +352,6 @@
         }
 
         /* About Section */
-        #about {
-            display: flex;
-            flex-direction: column;
-        }
-
         .about-content {
             display: flex;
             gap: 50px;
@@ -282,6 +365,8 @@
             margin-bottom: 20px;
             color: var(--text-secondary);
             font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .skills-list {
@@ -289,6 +374,8 @@
             grid-template-columns: repeat(2, minmax(140px, 200px));
             gap: 10px;
             margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .skill-item {
@@ -296,24 +383,87 @@
             font-size: 1rem;
             color: var(--text-secondary);
             position: relative;
-            padding-left: 20px;
+            padding: 15px 15px 15px 25px;
+            background-color: var(--secondary-bg);
+            border-radius: 5px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: default;
+            overflow: hidden;
+        }
+      .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.1);
+            color: var(--accent);
+            background-color: rgba(100, 255, 218, 0.1);
         }
 
-        .skill-item::before {
-            content: '▹';
+        .interests-list {
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .education-list {
+            margin-top: 20px;
+        }
+        .education-item {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 30px;
+            border-left: 2px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+          .education-item:hover {
+            transform: translateX(5px);
+        }
+
+        .education-item::before {
+            content: '';
             position: absolute;
-            left: 0;
+            left: -8px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.2);
+        }
+        .education-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .education-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .education-degree {
             color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .education-details {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .education-location {
+            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         /* Experience Section */
-        #experience {
-            position: relative;
-        }
-
         .experience-tabs {
             display: flex;
             margin-bottom: 30px;
+            border-bottom: 1px solid rgba(136, 146, 176, 0.2);
         }
 
         .tab-btn {
@@ -326,11 +476,26 @@
             font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
             font-size: 1rem;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .tab-btn.active {
             color: var(--accent);
-            border-bottom: 2px solid var(--accent);
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
         }
 
         .tab-content {
@@ -388,10 +553,6 @@
         }
 
         /* Projects Section */
-        #projects {
-            position: relative;
-        }
-
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -403,20 +564,49 @@
             background-color: var(--secondary-bg);
             border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             z-index: 1;
+            perspective: 1000px;
+        }
+
+        .project-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
         }
 
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 
+                        0 10px 10px rgba(0, 0, 0, 0.22);
+        }
+
+        .project-card:hover .project-card-inner {
+            transform: rotateY(5deg);
         }
 
         .project-image {
             width: 100%;
             height: 220px;
             overflow: hidden;
+            position: relative;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(10, 25, 47, 0.8) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-image::before {
+            opacity: 1;
         }
 
         .project-image img {
@@ -432,6 +622,13 @@
 
         .project-content {
             padding: 25px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         .project-title {
@@ -458,6 +655,18 @@
             color: var(--text-secondary);
         }
 
+        .project-tech span {
+            background-color: rgba(100, 255, 218, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .project-tech span:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
         .project-links {
             display: flex;
             gap: 20px;
@@ -467,22 +676,26 @@
             color: var(--text-primary);
             font-size: 1rem;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
         }
 
         .project-link:hover {
             color: var(--accent);
+            transform: translateY(-2px);
         }
 
         .project-link i {
             margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .project-link:hover i {
+            transform: scale(1.2);
         }
 
         /* Achievements Section */
-        #achievements {
-            position: relative;
-        }
-
         .achievements-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -494,11 +707,43 @@
             background-color: var(--secondary-bg);
             border-radius: 10px;
             padding: 30px;
-            transition: transform 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--accent), 
+                var(--accent-pink), 
+                var(--accent));
+            background-size: 200% 200%;
+            z-index: -1;
+            border-radius: inherit;
+            animation: gradientBorder 3s ease infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .achievement-card:hover::before {
+            opacity: 1;
         }
 
         .achievement-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .achievement-title {
@@ -513,6 +758,11 @@
         .achievement-title i {
             margin-right: 12px;
             font-size: 1.4rem;
+            transition: transform 0.3s ease;
+        }
+
+        .achievement-card:hover .achievement-title i {
+            transform: scale(1.2);
         }
 
         .achievement-description {
@@ -578,15 +828,39 @@
         .social-link {
             color: var(--text-primary);
             font-size: 1.4rem;
-            transition: color 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .social-link:hover {
             color: var(--accent);
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.2);
         }
 
         /* Chat Application */
+        .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent);
+            color: var(--primary-bg);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 1000;
+            font-size: 1.4rem;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 20px rgba(100, 255, 218, 0.4);
+        }
+
         .chat-container {
             position: fixed;
             bottom: 20px;
@@ -601,7 +875,7 @@
             overflow: hidden;
             transform: translateY(20px);
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             z-index: 1000;
         }
 
@@ -631,11 +905,12 @@
             color: var(--text-primary);
             font-size: 1.3rem;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .chat-close:hover {
             color: var(--accent-pink);
+            transform: rotate(90deg);
         }
 
         .chat-messages {
@@ -665,6 +940,7 @@
             margin-bottom: 5px;
             font-size: 0.95rem;
             line-height: 1.4;
+            transition: all 0.3s ease;
         }
 
         .message.sent .message-content {
@@ -699,6 +975,11 @@
             color: var(--text-primary);
             outline: none;
             font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input input:focus {
+            box-shadow: 0 0 0 2px var(--accent);
         }
 
         .chat-input button {
@@ -710,36 +991,13 @@
             height: 42px;
             margin-left: 12px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             font-size: 1.1rem;
         }
 
         .chat-input button:hover {
             background-color: rgba(100, 255, 218, 0.8);
-        }
-
-        .chat-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background-color: var(--accent);
-            color: var(--primary-bg);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            font-size: 1.4rem;
-        }
-
-        .chat-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(100, 255, 218, 0.4);
+            transform: rotate(15deg);
         }
 
         /* Responsive Styles */
@@ -780,6 +1038,10 @@
                 order: 1;
             }
 
+            .hero-cta {
+                justify-content: center;
+            }
+
             .about-content {
                 flex-direction: column;
             }
@@ -795,6 +1057,10 @@
             .chat-container {
                 width: 300px;
                 height: 400px;
+            }
+
+            .section-title::after {
+                width: 150px;
             }
         }
 
@@ -817,29 +1083,15 @@
                 right: 10px;
                 bottom: 10px;
             }
-        }
 
-        /* Animation Classes */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+            .section-title::after {
+                width: 100px;
+            }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .scale-in {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .scale-in.visible {
-            opacity: 1;
-            transform: scale(1);
+            .hero-cta {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
     </style>
 </head>
@@ -858,7 +1110,6 @@
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#achievements" class="nav-link">Achievements</a>
                 <a href="#contact" class="nav-link">Contact</a>
-                
             </nav>
             <button class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -872,17 +1123,28 @@
         <section id="hero">
             <div class="hero-content">
                 <div class="hero-text">
-                    <p class="hero-greeting fade-in">Hi, my name is</p>
-                    <h1 class="hero-name fade-in" style="transition-delay: 0.1s;">Yakshitha Kakarla.</h1>
-                    <h2 class="hero-title fade-in" style="transition-delay: 0.2s;">I build things for the web.</h2>
-                    <p class="hero-description fade-in" style="transition-delay: 0.3s;">
+                    <p class="hero-greeting">Hi, my name is</p>
+                    <h1 class="hero-name">Yakshitha Kakarla.</h1>
+                    <h2 class="hero-title">AI/ML Enthusiast & Web Developer</h2>
+                    <p class="hero-description">
                         I'm a Computer Science undergraduate specializing in AI & ML with a passion for web development.
                         Currently focused on building responsive, user-friendly applications with modern technologies.
                     </p>
-                    <a href="#projects" class="resume-btn fade-in" style="transition-delay: 0.4s;">Check out my projects</a>
+                    <div class="hero-cta">
+                        <a href="#projects" class="resume-btn">
+                            <span>View My Work</span>
+                            <svg class="btn-arrow" viewBox="0 0 13 10" height="10px" width="15px">
+                                <path d="M1,5 L11,5"></path>
+                                <polyline points="8 1 12 5 8 9"></polyline>
+                            </svg>
+                        </a>
+                        <a href="#contact" class="contact-btn">Contact Me</a>
+                    </div>
                 </div>
                 <div class="hero-image">
-                    
+                    <div class="image-wrapper">
+                        <img src="Yak.jpg" alt="Yakshitha Kakarla" class="profile-img">
+                    </div>
                 </div>
             </div>
         </section>
@@ -892,28 +1154,51 @@
             <h2 class="section-title">About Me</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p class="fade-in">
-                        Hello! I'm Yakshitha, a passionate Computer Science student specializing in Artificial Intelligence and Machine Learning at Mohan Babu University.
+                    <p>
+                        A passionate Computer Science student specializing in Artificial Intelligence and Machine Learning at Mohan Babu University.
                     </p>
-                    <p class="fade-in" style="transition-delay: 0.1s;">
+                    <p>
                         I have a strong foundation in data structures and algorithms, and I'm particularly interested in applying my skills to solve real-world problems through effective code. My journey in web development started when I discovered the power of combining AI with web technologies to create intelligent applications.
                     </p>
-                    <p class="fade-in" style="transition-delay: 0.2s;">
-                        Here are a few technologies I've been working with recently:
-                    </p>
-                    <div class="skills-list fade-in" style="transition-delay: 0.3s;">
-                        <div class="skill-item">HTML</div>
-                        <div class="skill-item">CSS</div>
+                    
+                    <h3 style="margin-top: 25px; color: var(--accent);">Skills</h3>
+                    <div class="skills-list">
+                        <div class="skill-item">Java</div>
+                        <div class="skill-item">Python</div>
+                        <div class="skill-item">Data Structures & Algorithms</div>
+                        <div class="skill-item">HTML/CSS</div>
                         <div class="skill-item">JavaScript</div>
                         <div class="skill-item">React</div>
-                        <div class="skill-item">Node.js</div>
-                        <div class="skill-item">Express.js</div>
-                        <div class="skill-item">MongoDB</div>
-                        <div class="skill-item">Firebase</div>
-                        <div class="skill-item">Python</div>
-                        <div class="skill-item">Java</div>
-                        <div class="skill-item">AWS</div>
-                        <div class="skill-item">Docker</div>
+                    </div>
+                    
+                    <h3 style="margin-top: 25px; color: var(--accent);">Interests</h3>
+                    <div class="interests-list">
+                        <div class="skill-item">Data Structures and Algorithms</div>
+                        <div class="skill-item">Web Development</div>
+                        <div class="skill-item">Machine Learning</div>
+                        <div class="skill-item">Competitive Programming</div>
+                    </div>
+                    
+                    <h3 style="margin-top: 25px; color: var(--accent);">Education</h3>
+                    <div class="education-list">
+                        <div class="education-item">
+                            <h4 class="education-title">Mohan Babu University</h4>
+                            <p class="education-degree">B.Tech in CSE (AIML)</p>
+                            <p class="education-details">CGPA: 9.1 | July 2022– July 2026</p>
+                            <p class="education-location">Tirupati, India</p>
+                        </div>
+                        <div class="education-item">
+                            <h4 class="education-title">Sri Chaitanya College</h4>
+                            <p class="education-degree">MPC</p>
+                            <p class="education-details">Percentage: 94% | 2020– 2022</p>
+                            <p class="education-location">Tirupati, India</p>
+                        </div>
+                        <div class="education-item">
+                            <h4 class="education-title">Narayana Schools</h4>
+                            <p class="education-degree">SSC- BSEAP</p>
+                            <p class="education-details">Percentage: 98% | 2019-2020</p>
+                            <p class="education-location">Tadipatri, India</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -944,146 +1229,193 @@
             <h2 class="section-title">Projects</h2>
             <div class="projects-grid">
                 <!-- Project 1 -->
-                <div class="project-card fade-in">
-                    <div class="project-image">
-                        <img src="https://wallpapers.com/images/hd/e-commerce-1920-x-1080-wallpaper-tb4uqckgoo0883zw.jpg" alt="E-commerce App">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">E-commerce Web App</h3>
-                        <p class="project-description">
-                            Full-featured e-commerce platform with JWT authentication, product filtering, shopping cart, and Stripe payment integration.
-                        </p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>MongoDB</span>
-                            <span>Stripe API</span>
+                <div class="project-card">
+                    <div class="project-card-inner">
+                        <div class="project-image">
+                            <img src="https://wallpapers.com/images/hd/e-commerce-1920-x-1080-wallpaper-tb4uqckgoo0883zw.jpg" alt="E-commerce App">
                         </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <div class="project-content">
+                            <div class="project-header">
+                                <h3 class="project-title">E-commerce Web App</h3>
+                                <div class="project-links">
+                                    <a href="#" class="project-link" aria-label="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="#" class="project-link" aria-label="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="project-description">
+                                Full-featured e-commerce platform with JWT authentication, product filtering, shopping cart, and Stripe payment integration.
+                            </p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Node.js</span>
+                                <span>MongoDB</span>
+                                <span>Stripe API</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project 2 -->
-                <div class="project-card fade-in" style="transition-delay: 0.1s;">
-                    <div class="project-image">
-                        <img src="https://repository-images.githubusercontent.com/752816875/1548065c-8a86-44c0-82fb-648669d55fc9" alt="Teams Clone">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Microsoft Teams Clone</h3>
-                        <p class="project-description">
-                            Real-time messaging application with user authentication and responsive UI built with React and Chat Engine API.
-                        </p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>Chat Engine</span>
-                            <span>JavaScript</span>
-                            <span>CSS3</span>
+                <div class="project-card">
+                    <div class="project-card-inner">
+                        <div class="project-image">
+                            <img src="https://repository-images.githubusercontent.com/752816875/1548065c-8a86-44c0-82fb-648669d55fc9" alt="Teams Clone">
                         </div>
-                        <div class="project-links">
-                            <a href="https://github.com/Yakshitha21/chat-application" class="project-link"><i class="fab fa-github"></i> Code</a>
-                            <a href="https://yakshitha21.github.io/chat-application/" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <div class="project-content">
+                            <div class="project-header">
+                                <h3 class="project-title">Microsoft Teams Clone</h3>
+                                <div class="project-links">
+                                    <a href="https://github.com/Yakshitha21/chat-application" class="project-link" aria-label="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="https://yakshitha21.github.io/chat-application/" class="project-link" aria-label="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="project-description">
+                                Real-time messaging application with user authentication and responsive UI built with React and Chat Engine API.
+                            </p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Chat Engine</span>
+                                <span>JavaScript</span>
+                                <span>CSS3</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project 3 -->
-                <div class="project-card fade-in" style="transition-delay: 0.2s;">
-                    <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="SaaS Dashboard">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">SaaS Admin Dashboard</h3>
-                        <p class="project-description">
-                            Comprehensive admin dashboard for SaaS applications with analytics, user management, and data visualization.
-                        </p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>MongoDB</span>
-                            <span>Chart.js</span>
+                <div class="project-card">
+                    <div class="project-card-inner">
+                        <div class="project-image">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="SaaS Dashboard">
                         </div>
-                        <div class="project-links">
-                            <a href="https://github.com/Yakshitha21/saasadmindashboard" class="project-link"><i class="fab fa-github"></i> Code</a>
-                            <a href="https://yakshitha21.github.io/saasadmindashboard/" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <div class="project-content">
+                            <div class="project-header">
+                                <h3 class="project-title">SaaS Admin Dashboard</h3>
+                                <div class="project-links">
+                                    <a href="https://github.com/Yakshitha21/saasadmindashboard" class="project-link" aria-label="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="https://yakshitha21.github.io/saasadmindashboard/" class="project-link" aria-label="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="project-description">
+                                Comprehensive admin dashboard for SaaS applications with analytics, user management, and data visualization.
+                            </p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Node.js</span>
+                                <span>MongoDB</span>
+                                <span>Chart.js</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project 4 -->
-                <div class="project-card fade-in" style="transition-delay: 0.3s;">
-                    <div class="project-image">
-                        <img src="https://static1.topspeedimages.com/wordpress/wp-content/uploads/2023/01/tesla-models.jpg" alt="Tesla UI Clone">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Tesla UI Clone</h3>
-                        <p class="project-description">
-                            Interactive clone of Tesla's website UI with smooth animations and responsive design.
-                        </p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>GSAP</span>
-                            <span>CSS3</span>
-                            <span>Framer Motion</span>
+                <div class="project-card">
+                    <div class="project-card-inner">
+                        <div class="project-image">
+                            <img src="https://static1.topspeedimages.com/wordpress/wp-content/uploads/2023/01/tesla-models.jpg" alt="Tesla UI Clone">
                         </div>
-                        <div class="project-links">
-                            <a href="https://github.com/Yakshitha21/Teslaclone" class="project-link"><i class="fab fa-github"></i> Code</a>
-                            <a href="https://yakshitha21.github.io/Teslaclone/" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <div class="project-content">
+                            <div class="project-header">
+                                <h3 class="project-title">Tesla UI Clone</h3>
+                                <div class="project-links">
+                                    <a href="https://github.com/Yakshitha21/Teslaclone" class="project-link" aria-label="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="https://yakshitha21.github.io/Teslaclone/" class="project-link" aria-label="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="project-description">
+                                Interactive clone of Tesla's website UI with smooth animations and responsive design.
+                            </p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>GSAP</span>
+                                <span>CSS3</span>
+                                <span>Framer Motion</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project 5 -->
-                <div class="project-card fade-in" style="transition-delay: 0.4s;">
-                    <div class="project-image">
-                        <img src="https://arynews.tv/wp-content/uploads/2022/11/netflix.jpg" alt="Netflix Clone">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Netflix Clone</h3>
-                        <p class="project-description">
-                            Streaming platform clone with movie browsing, user authentication, and video playback.
-                        </p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>Firebase</span>
-                            <span>TMDB API</span>
-                            <span>Redux</span>
+                <div class="project-card">
+                    <div class="project-card-inner">
+                        <div class="project-image">
+                            <img src="https://arynews.tv/wp-content/uploads/2022/11/netflix.jpg" alt="Netflix Clone">
                         </div>
-                        <div class="project-links">
-                            <a href="https://github.com/Yakshitha21/netflixclone" class="project-link"><i class="fab fa-github"></i> Code</a>
-                            <a href="https://yakshitha21.github.io/netflixclone/" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <div class="project-content">
+                            <div class="project-header">
+                                <h3 class="project-title">Netflix Clone</h3>
+                                <div class="project-links">
+                                    <a href="https://github.com/Yakshitha21/netflixclone" class="project-link" aria-label="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="https://yakshitha21.github.io/netflixclone/" class="project-link" aria-label="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="project-description">
+                                Streaming platform clone with movie browsing, user authentication, and video playback.
+                            </p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Firebase</span>
+                                <span>TMDB API</span>
+                                <span>Redux</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-              
             </div>
         </section>
 
-
         <!-- Achievements Section -->
         <section id="achievements">
-            <h2 class="section-title">Achievements</h2>
+            <h2 class="section-title">Certificates & Achievements</h2>
             <div class="achievements-grid">
-                <div class="achievement-card fade-in">
+                <div class="achievement-card">
                     <h3 class="achievement-title"><i class="fas fa-medal"></i>Silver Badge in Python</h3>
                     <p class="achievement-description">Earned a Silver Badge on HackerRank for Python programming by solving numerous challenges and demonstrating strong problem-solving skills.</p>
                 </div>
                 
-                <div class="achievement-card fade-in" style="transition-delay: 0.1s;">
-                    <h3 class="achievement-title"><i class="fas fa-fire"></i>50+ Day Streak</h3>
-                    <p class="achievement-description">Maintained a 50+ day streak on LeetCode by consistently solving coding problems and improving algorithmic thinking.</p>
+                <div class="achievement-card">
+                    <h3 class="achievement-title"><i class="fas fa-fire"></i>100+ Days of LeetCode</h3>
+                    <p class="achievement-description">Maintained a 100+ day streak on LeetCode by consistently solving coding problems and improving algorithmic thinking.</p>
                 </div>
                 
-                <div class="achievement-card fade-in" style="transition-delay: 0.2s;">
-                    <h3 class="achievement-title"><i class="fas fa-certificate"></i>Introduction to AI</h3>
-                    <p class="achievement-description">Completed the Introduction to AI course on Coursera, gaining foundational knowledge in artificial intelligence concepts.</p>
+                <div class="achievement-card">
+                    <h3 class="achievement-title"><i class="fas fa-code"></i>300+ Problems Solved</h3>
+                    <p class="achievement-description">Solved 300+ problems across various coding platforms including LeetCode, CodeChef, and HackerRank.</p>
                 </div>
                 
-                <div class="achievement-card fade-in" style="transition-delay: 0.3s;">
-                    <h3 class="achievement-title"><i class="fas fa-laptop-code"></i>Web Development Bootcamp</h3>
+                <div class="achievement-card">
+                    <h3 class="achievement-title"><i class="fas fa-trophy"></i>Data Structures & Algorithms</h3>
+                    <p class="achievement-description">Strong foundation in DSA with expertise in implementing efficient algorithms and solving complex problems.</p>
+                </div>
+                
+                <div class="achievement-card">
+                    <h3 class="achievement-title"><i class="fas fa-laptop-code"></i>Competitive Programming</h3>
+                    <p class="achievement-description">Active participant in competitive programming contests with consistent performance in coding competitions.</p>
+                </div>
+                
+                <div class="achievement-card">
+                    <h3 class="achievement-title"><i class="fas fa-certificate"></i>Web Development Bootcamp</h3>
                     <p class="achievement-description">Successfully completed a comprehensive Web Development Bootcamp on Udemy, mastering full-stack development skills.</p>
                 </div>
             </div>
@@ -1091,22 +1423,33 @@
 
         <!-- Contact Section -->
         <section id="contact">
-            <p class="hero-greeting fade-in">What's Next?</p>
-            <h2 class="contact-title fade-in" style="transition-delay: 0.1s;">Get In Touch</h2>
-            <p class="contact-description fade-in" style="transition-delay: 0.2s;">
-                I'm currently looking for new opportunities, whether it's internships, freelance work, or just to chat about tech. Feel free to reach out!
+            <p class="hero-greeting">What's Next?</p>
+            <h2 class="contact-title">Get In Touch</h2>
+            <p class="contact-description">
+                I'm currently looking for new opportunities, whether it's internships, freelance work, or just to chat about tech. Feel free to reach out through email or LinkedIn!
             </p>
-            <a href="mailto:yakshithakakarla75@gmail.com" class="contact-btn fade-in" style="transition-delay: 0.3s;">Say Hello</a>
+            <a href="mailto:yakshithakakarla75@gmail.com" class="contact-btn">Say Hello</a>
         </section>
     </main>
 
     <!-- Footer -->
     <footer>
         <div class="social-links">
-            <a href="https://github.com/Yakshitha21" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/yakshitha-kakarla-a2891b283/" class="social-link" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://leetcode.com/u/Yakshitha07/" class="social-link" target="_blank"><i class="fas fa-code"></i></a>
-            <a href="https://www.codechef.com/users/yakshitha_21" class="social-link" target="_blank"><i class="fas fa-laptop-code"></i></a>
+            <a href="https://github.com/Yakshitha21" class="social-link" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/yakshitha-kakarla-a2891b283/" class="social-link" target="_blank" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://leetcode.com/u/Yakshitha07/" class="social-link" target="_blank" aria-label="LeetCode">
+                <i class="fas fa-code"></i>
+            </a>
+            <a href="https://www.codechef.com/users/yakshitha_21" class="social-link" target="_blank" aria-label="CodeChef">
+                <i class="fas fa-laptop-code"></i>
+            </a>
+            <a href="mailto:yakshithakakarla75@gmail.com" class="social-link" target="_blank" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
         </div>
         <p>Designed & Built by Yakshitha Kakarla</p>
     </footer>
@@ -1144,8 +1487,8 @@
     </div>
 
     <script>
-        // Initialize particles.js
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize particles.js
             particlesJS('particles-js', {
                 "particles": {
                     "number": {
@@ -1252,13 +1595,37 @@
                 "retina_detect": true
             });
 
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
             // Scroll animations
-            const fadeElements = document.querySelectorAll('.fade-in, .scale-in');
+            const fadeElements = document.querySelectorAll('.hero-greeting, .hero-name, .hero-title, .hero-description, .hero-cta, .about-text p, .skills-list, .interests-list, .education-list');
             
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                        
+                        // Stagger animations for hero section
+                        if (entry.target.classList.contains('hero-greeting')) {
+                            entry.target.style.transitionDelay = '0s';
+                        } else if (entry.target.classList.contains('hero-name')) {
+                            entry.target.style.transitionDelay = '0.1s';
+                        } else if (entry.target.classList.contains('hero-title')) {
+                            entry.target.style.transitionDelay = '0.2s';
+                        } else if (entry.target.classList.contains('hero-description')) {
+                            entry.target.style.transitionDelay = '0.3s';
+                        } else if (entry.target.classList.contains('hero-cta')) {
+                            entry.target.style.transitionDelay = '0.4s';
+                        }
                     }
                 });
             }, {
@@ -1282,6 +1649,11 @@
                             top: targetElement.offsetTop - 70,
                             behavior: 'smooth'
                         });
+                    }
+                    
+                    // Close mobile menu if open
+                    if (window.innerWidth <= 768) {
+                        document.querySelector('.nav-links').classList.remove('show');
                     }
                 });
             });
@@ -1374,6 +1746,14 @@
                 if (e.key === 'Enter') {
                     sendMessage();
                 }
+            });
+
+            // Initialize VanillaTilt for project cards
+            VanillaTilt.init(document.querySelectorAll(".project-card"), {
+                max: 5,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.2,
             });
         });
     </script>
